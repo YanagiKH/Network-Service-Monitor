@@ -2,10 +2,9 @@ from __future__ import annotations
 
 from typing import Any
 
-from PySide6.QtCore import QAbstractTableModel, Qt, QModelIndex, QVariant
+from PySide6.QtCore import QAbstractTableModel, Qt, QModelIndex
 
 from ..core.scanner import 連線資料
-from ..utils.formatters import 位元組格式
 
 
 欄位名稱 = [
@@ -60,28 +59,40 @@ class 連線表模型(QAbstractTableModel):
 
     def data(self, index: QModelIndex, role: int = Qt.ItemDataRole.DisplayRole) -> Any:
         if not index.isValid():
-            return QVariant()
+            return None
+
         row = index.row()
         col = index.column()
         if row >= len(self._資料):
-            return QVariant()
+            return None
+
         item = self._資料[row]
+
         if role == Qt.ItemDataRole.DisplayRole:
             try:
                 return _ATTR_MAP[col](item)
             except Exception:
                 return ""
+
         if role == Qt.ItemDataRole.ToolTipRole:
             return f"{item.程序名稱} / {item.服務名稱}\n{item.命令列}\n{item.判斷說明}"
+
         if role == Qt.ItemDataRole.TextAlignmentRole:
             if col in (1, 6):
                 return int(Qt.AlignmentFlag.AlignCenter)
             return int(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
+
         if role == Qt.ItemDataRole.UserRole:
             return item
-        return QVariant()
 
-    def headerData(self, section: int, orientation: Qt.Orientation, role: int = Qt.ItemDataRole.DisplayRole) -> Any:
+        return None
+
+    def headerData(
+        self,
+        section: int,
+        orientation: Qt.Orientation,
+        role: int = Qt.ItemDataRole.DisplayRole,
+    ) -> Any:
         if role == Qt.ItemDataRole.DisplayRole and orientation == Qt.Orientation.Horizontal:
             return 欄位名稱[section]
-        return QVariant()
+        return None
