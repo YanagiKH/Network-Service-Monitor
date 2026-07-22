@@ -57,6 +57,8 @@ class 主視窗(QMainWindow):
         self._信號.錯誤.connect(self._顯示錯誤)
         self._建立介面()
         self._建立工具列()
+        self.計時器 = QTimer(self)
+        self.計時器.setSingleShot(False)
         self._套用刷新()
         self._開始刷新計時器()
 
@@ -206,6 +208,8 @@ class 主視窗(QMainWindow):
 
     def _切換自動刷新(self, enabled: bool) -> None:
         self._自動刷新 = enabled
+        self.計時器 = QTimer(self)
+        self.計時器.setSingleShot(False)
         self._套用刷新()
 
     def _更新搜尋(self, text: str) -> None:
