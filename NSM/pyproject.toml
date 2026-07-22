@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "network-service-monitor"
+version = "1.0.0"
+description = "Windows network service monitor"
+readme = "README.md"
+requires-python = ">=3.13"
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["network_monitor*"]
